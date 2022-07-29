@@ -1,3 +1,5 @@
+// Questions
+
 const quizDB = [
     {
         question: "What does HTML stand for ?",
@@ -23,7 +25,27 @@ const quizDB = [
         d: "Hypertext Transfer Protocol",
         ans: "ans4",
     },
+    {
+        question: "Choose the correct HTML element for the largest heading:",
+        a: "<h6>",
+        b: "<head>",
+        c: "<h1>",
+        d: "<big>",
+        ans: "ans3",
+    },
+    {
+        question:
+            "What is the correct HTML element for inserting a line break?",
+        a: "<break>",
+        b: "<newline>",
+        c: "<br>",
+        d: "<new>",
+        ans: "ans3",
+    },
 ];
+
+// Initialize variables
+
 const question = document.querySelector(".question");
 const option1 = document.querySelector("#option1");
 const option2 = document.querySelector("#option2");
@@ -38,12 +60,24 @@ const scoreBoard = document.querySelector(".scorebaord");
 const finalScore = document.querySelector("#score");
 const playAgain = document.querySelector("#play-again");
 
-let questionCount = 0;
+let i = 0;
 let score = 0;
+
+const quizLength = quizDB.length;
+let indexNumberofQuizDB = Array.from(quizDB.keys());
+
+let newQuizIndex = shuffleQuestion(indexNumberofQuizDB);
+let questionNumber = Math.floor(indexNumberofQuizDB.length * 0.8);
+
+// Call init function
 
 init();
 
-startButton.addEventListener("click", startGame);
+// Functions
+
+function shuffleQuestion(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
 
 function init() {
     questionContainer.classList.add("hidden");
@@ -57,8 +91,8 @@ function startGame() {
     nextBtn.classList.remove("hidden");
 }
 
-const loadQuestion = () => {
-    const questionList = quizDB[questionCount];
+const loadQuestion = (e) => {
+    const questionList = quizDB[newQuizIndex[e]];
     question.innerText = questionList.question;
 
     option1.innerText = questionList.a;
@@ -66,8 +100,6 @@ const loadQuestion = () => {
     option3.innerText = questionList.c;
     option4.innerText = questionList.d;
 };
-
-loadQuestion();
 
 const getCheckAnswer = () => {
     let answer;
@@ -84,17 +116,26 @@ const deselectAll = () => {
     answers.forEach((curAnsElem) => (curAnsElem.checked = false));
 };
 
+// Call loadQuestion function
+
+loadQuestion(i);
+
+// Actions
+
+startButton.addEventListener("click", startGame);
 submit.addEventListener("click", () => {
     const checkedAnswer = getCheckAnswer();
-    if (checkedAnswer === quizDB[questionCount].ans) {
+    let newQuizIndexValue = newQuizIndex[i];
+    if (checkedAnswer === quizDB[newQuizIndexValue].ans) {
         score++;
     }
-    questionCount++;
+
+    i++;
 
     deselectAll();
 
-    if (questionCount < quizDB.length) {
-        loadQuestion();
+    if (i < questionNumber) {
+        loadQuestion(i);
     } else {
         scoreBoard.classList.remove("hidden");
         questionContainer.classList.add("hidden");

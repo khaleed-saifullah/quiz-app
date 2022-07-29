@@ -37,14 +37,14 @@
 
 .answers {
     display: flex;
-    align-content: center;
-    flex-wrap: wrap;
     border-left: 1px solid #000;
     padding-left: 20px;
+    flex-direction: column;
 }
 
 .answers .btn {
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .next-btn {
